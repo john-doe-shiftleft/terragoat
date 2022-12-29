@@ -45,7 +45,7 @@ resource "aws_s3_bucket" "financials" {
   # bucket does not have access logs
   # bucket does not have versioning
   bucket        = "${local.resource_prefix.value}-financials"
-  acl           = "private"
+  acl           = "public-read"
   force_destroy = true
   tags = merge({
     Name        = "${local.resource_prefix.value}-financials"
@@ -68,9 +68,6 @@ resource "aws_s3_bucket" "operations" {
   # bucket does not have access logs
   bucket = "${local.resource_prefix.value}-operations"
   acl    = "private"
-  versioning {
-    enabled = true
-  }
   force_destroy = true
   tags = merge({
     Name        = "${local.resource_prefix.value}-operations"
@@ -92,9 +89,6 @@ resource "aws_s3_bucket" "data_science" {
   # bucket is not encrypted
   bucket = "${local.resource_prefix.value}-data-science"
   acl    = "private"
-  versioning {
-    enabled = true
-  }
   logging {
     target_bucket = "${aws_s3_bucket.logs.id}"
     target_prefix = "log/"
@@ -116,7 +110,7 @@ resource "aws_s3_bucket" "logs" {
   bucket = "${local.resource_prefix.value}-logs"
   acl    = "log-delivery-write"
   versioning {
-    enabled = true
+    enabled = false
   }
   server_side_encryption_configuration {
     rule {
